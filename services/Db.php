@@ -13,4 +13,9 @@ class Db
     {
         return [];
     }
+
+    public function execute($sql)
+    {
+        return [];
+    }
 }
