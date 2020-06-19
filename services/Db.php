@@ -33,7 +33,7 @@ class Db
 
             $this->connection->setAttribute(
                 \PDO::ATTR_DEFAULT_FETCH_MODE,
-                \PDO::FETCH_OBJ
+                \PDO::FETCH_ASSOC
             );
         }
 
@@ -44,6 +44,18 @@ class Db
         $pdoStatement = $this->getConnection()->prepare($sql);
         $pdoStatement->execute($params);
         return $pdoStatement;
+    }
+
+    public function getLastInsertId()
+    {
+        return $this->getConnection()->lastInsertId();
+    }
+
+    public function queryObject($className, string $sql, array $params = [])
+    {
+        $pdoStatement = $this->query($sql, $params);
+        $pdoStatement->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $className);
+        return $pdoStatement->fetchAll();
     }
 
     public function execute(string $sql, array $params = [])
