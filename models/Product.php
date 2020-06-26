@@ -2,15 +2,34 @@
 namespace app\models;
 
 
-class Product extends Model
+class Product extends Record
 {
-    protected $id;
-    protected $name;
-    protected $image;
-    protected $description;
-    protected $popularity;
+    public $id;
+    public $name;
+    public $description;
+    public $price;
+    public $category_id;
 
-    public function getTableName(): string
+    /**
+     * Product constructor.
+     * @param $id
+     * @param $name
+     * @param $description
+     * @param $price
+     * @param $category_id
+     */
+    public function __construct($id = null, $name = null, $description = null, $price = null, $category_id = null)
+    {
+        parent::__construct();
+        $this->id = $id;
+        $this->name = $name;
+        $this->description = $description;
+        $this->price = $price;
+        $this->category_id = $category_id;
+    }
+
+
+    public static function getTableName(): string
     {
         return "products";
     }
@@ -23,20 +42,6 @@ class Product extends Model
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * Set the value of id
-	 *
-	 * @param   mixed  $id  
-	 *
-	 * @return  self
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-
-		return $this;
 	}
 
 	/**
@@ -58,31 +63,8 @@ class Product extends Model
 	 */
 	public function setName($name)
 	{
+        $this->catch('name');
 		$this->name = $name;
-
-		return $this;
-	}
-
-	/**
-	 * Get the value of image
-	 *
-	 * @return  mixed
-	 */
-	public function getImage()
-	{
-		return $this->image;
-	}
-
-	/**
-	 * Set the value of image
-	 *
-	 * @param   mixed  $image  
-	 *
-	 * @return  self
-	 */
-	public function setImage($image)
-	{
-		$this->image = $image;
 
 		return $this;
 	}
@@ -106,31 +88,58 @@ class Product extends Model
 	 */
 	public function setDescription($description)
 	{
+        $this->catch('description');
 		$this->description = $description;
 
 		return $this;
 	}
 
 	/**
-	 * Get the value of popularity
+	 * Get the value of price
 	 *
 	 * @return  mixed
 	 */
-	public function getPopularity()
+	public function getPrice()
 	{
-		return $this->popularity;
+		return $this->price;
 	}
 
 	/**
-	 * Set the value of popularity
+	 * Set the value of price
 	 *
-	 * @param   mixed  $popularity  
+	 * @param   mixed  $price  
 	 *
 	 * @return  self
 	 */
-	public function setPopularity($popularity)
+	public function setPrice($price)
 	{
-		$this->popularity = $popularity;
+        $this->catch('price');
+		$this->price = $price;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of category_id
+	 *
+	 * @return  mixed
+	 */
+	public function getCategory_id()
+	{
+		return $this->category_id;
+	}
+
+	/**
+	 * Set the value of category_id
+	 *
+	 * @param   mixed  $category_id  
+	 *
+	 * @return  self
+	 */
+	public function setCategory_id($category_id)
+	{
+        $this->catch('category_id');
+		$this->category_id = $category_id;
 
 		return $this;
 	}
