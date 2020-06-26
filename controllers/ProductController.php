@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 use app\models\Product;
+use app\models\User;
 
 class ProductController extends Controller
 {
@@ -14,11 +15,9 @@ class ProductController extends Controller
 
     public function actionCard()
     {
+        $user = User::getUserBySession(true);
         $id = $_GET['id'];
         $model = Product::getById($id);
-        $model->setName('Тест');
-        $model->save();
-        echo $this->render('product_card', ['model' => $model]);
+        echo $this->render('products/product_card', ['model' => $model]);
     }
-
 }

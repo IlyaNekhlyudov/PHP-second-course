@@ -4,7 +4,7 @@ namespace app\services;
 
 use app\traits\TSingleton;
 
-class Db
+class Db implements IDb
 {
     use TSingleton;
 

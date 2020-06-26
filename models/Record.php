@@ -4,16 +4,17 @@ namespace app\models;
 
 use app\interfaces\IRecord;
 use app\services\Db;
+use app\services\IDb;
 
 abstract class Record implements IRecord
 {
     protected $id;
     protected $db = null;
     public $isUpdate = [];
-
-    public function __construct()
+    
+    public function __construct(IDb $db)
     {
-        $this->db = Db::getInstance();
+        $this->db = $db;
     }
 
     public static function getById(int $id): Record
@@ -33,7 +34,7 @@ abstract class Record implements IRecord
     public function delete()
     {
         $sql = "SELECT * FROM {$this->tableName} WHERE id = :id";
-        return $this->db->execute($sql, [':id' => $this->id]);
+        return Db::getInstance()->execute($sql, [':id' => $this->id]);
     }
 
     public function insert()
@@ -44,7 +45,7 @@ abstract class Record implements IRecord
         $columns = [];
 
         foreach ($this as $key => $value) {
-            if(in_array($key,['db', 'tableName'])) {
+            if(in_array($key,['db', 'tableName', 'isUpdate'])) {
                 continue;
             }
 
@@ -56,8 +57,8 @@ abstract class Record implements IRecord
         $placeholders = implode(", ", array_keys($params));
 
         $sql = "INSERT INTO {$tableName} ({$columns}) VALUES ({$placeholders})";
-        $this->db->execute($sql, $params);
-        $this->id = $this->db->getLastInsertId();
+        Db::getInstance()->execute($sql, $params);
+        $this->id = Db::getInstance()->getLastInsertId();
     }
 
     public function update()
@@ -74,7 +75,7 @@ abstract class Record implements IRecord
         $this->isUpdate = []; // обнуление массива
 
         $sql = "UPDATE `{$tableName}` SET {$columns} WHERE id = :id";
-        return $this->db->execute($sql, [':id' => $this->id]);
+        return Db::getInstance()->execute($sql, [':id' => $this->id]);
     }
 
     public function catch($name)
@@ -87,12 +88,10 @@ abstract class Record implements IRecord
 
     public function save()
     {
-        if ($this::getById($this->id) && $this->isUpdate) {
+        if ($this->id && $this->isUpdate) {
             return $this->update();
         } else {
             return $this->insert();
         }
     }
-
-
 }

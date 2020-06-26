@@ -1,6 +1,7 @@
 <?php
 namespace app\models;
 
+use app\services\Db;
 
 class Product extends Record
 {
@@ -20,7 +21,7 @@ class Product extends Record
      */
     public function __construct($id = null, $name = null, $description = null, $price = null, $category_id = null)
     {
-        parent::__construct();
+        parent::__construct(Db::getInstance());
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
