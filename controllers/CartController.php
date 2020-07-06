@@ -2,29 +2,37 @@
 
 namespace app\controllers;
 
-use app\models\Cart;
+use app\models\repositories\UserRepository;
+use app\models\repositories\CartRepository;
+use app\services\Request;
 
 class CartController extends Controller {
     public function actionIndex()
     {
-        echo "cart";
+        $user = (new UserRepository())->getUserBySession(true);
+        $cart = (new CartRepository())->getAllByUserId($user->id);
+        echo $this->render('cart/cart', ['cart' => $cart, 'user' => $user]);
     }
 
-    public function actionCart()
+    public function ActionAdd()
     {
-        $type = $_GET['type'];
-        if ($type == 'add') {
-            $id = $_GET['id'];
-            $item = Cart::addItem($id);
-            var_dump($item);
-            // тут буду доделывать после юзеров, так как корзина привязывается к юзеру
+        $user = (new UserRepository())->getUserBySession(true);
+        $itemID = (new Request())->post('id');
+        if ($itemID) {
+            (new CartRepository())->addItem($user->id, $itemID);
         } else {
-            $items = Cart::getItems();
-            var_dump($items);
-            // echo $this->render('cart', ['items' => $items]);
-            // тут буду доделывать после юзеров, так как корзина привязывается к юзеру
+            (new Request())->redirect();
         }
     }
 
-
+    public function ActionRemove()
+    {
+        $user = (new UserRepository())->getUserBySession(true);
+        $itemID = (new Request())->post('id');
+        if ($itemID) {
+            (new CartRepository())->removeItem($user->id, $itemID);
+        } else {
+            (new Request())->redirect('/cart');
+        }
+    }
 }

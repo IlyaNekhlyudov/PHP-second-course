@@ -10,7 +10,7 @@
         <input type='submit' value='Зарегистрироваться'>
     </form>
 <?php else : ?>
-    <form action="/?c=user&a=exit" method='post'>
+    <form action="/user/exit" method='post'>
         <p>Вы уже залогинены. Хотите выйти?</p>
         <input type='submit' value='Выйти'>
     </form>
