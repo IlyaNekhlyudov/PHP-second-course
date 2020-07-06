@@ -25,6 +25,7 @@ class Db implements IDb
     public function getConnection()
     {
         if (is_null($this->connection)) {
+
             $this->connection = new \PDO(
                 $this->buildDsnString(),
                 $this->config['login'],
@@ -40,7 +41,8 @@ class Db implements IDb
         return $this->connection;
     }
 
-    private function query(string $sql, array $params = []) {
+    private function query(string $sql, array $params = [])
+    {
         $pdoStatement = $this->getConnection()->prepare($sql);
         $pdoStatement->execute($params);
         return $pdoStatement;

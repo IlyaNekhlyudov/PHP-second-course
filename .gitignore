@@ -1,2 +1,5 @@
 
 *.jpg
+*.rst
+composer.phar
+/vendor/

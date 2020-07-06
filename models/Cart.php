@@ -2,47 +2,48 @@
 
 namespace app\models;
 
+use app\models\repositories\CartRepository;
+use app\services\db;
+
 class Cart extends Record
 {
     public $id;
-    public $name;
-    public $description;
-    public $price;
-    public $category_id;
+    public $productID;
+    public $productImage;
+    public $productName;
+    public $productPrice;
+    public $quantity;
+    public $date;
+    public $userID;
 
-    /**
-     * Product constructor.
-     * @param $id
-     * @param $name
-     * @param $description
-     * @param $price
-     * @param $category_id
-     */
-    public function __construct($id = null, $name = null, $description = null, $price = null, $category_id = null)
+
+    public function __construct($id = null, $productID = null, $productImage = null, $productName = null, $productPrice = null, $quantity = null, $date = null, $userID = null)
     {
-        parent::__construct();
         $this->id = $id;
         $this->productID = $productID;
+        $this->productImage = $productImage;
+        $this->productName = $productName;
+        $this->productPrice = $productPrice;
         $this->quantity = $quantity;
         $this->date = $date;
-        $this->userHash = $userHash;
+        $this->userID = $userID;        
     }
-
 
     public static function getTableName(): string
     {
         return "cart";
     }
 
-    public function getItems()
+    public function getItemByUser($userID, $productID)
     {
-        // тут пока пусто, так как нет юзера ещё, а у меня идёт к нему привязка
-        return 'test';
+        $tableName = static::getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE userID = :userID AND productID = :productID LIMIT 1";
+        return Db::getInstance()->queryObject(get_called_class(), $sql, [':userID' => $userID, ':productID' => $productID])[0];
     }
 
-    public function addItem($id)
+    public function setQuantity($params)
     {
-        // аналогично
-        return true;
+        $this->catch('quantity');
+        return $this->quantity = $params;
     }
 }

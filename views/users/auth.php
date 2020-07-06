@@ -4,4 +4,4 @@
     <input type="password" name="password">
     <input type="submit" value="login">
 </form>
-<a href='/?c=user&a=register'>Регистрация</a>
+<a href='/user/register'>Регистрация</a>

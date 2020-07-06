@@ -1,0 +1,29 @@
+.menu {
+    display: flex;
+    list-style: none;
+}
+
+.menu-link {
+    margin-right: 20px;
+    border: 1px solid black;
+    padding: 5px;
+    text-decoration: none;
+    color: black;
+    background-color: #00c4ff;
+}
+
+.menu-link:hover {
+    background-color: #10c8ff4d;
+}
+
+.menu-link:active {
+    background-color: #1ba3cc;
+}
+
+.message {
+    position: absolute;
+    right: 13px;
+    padding: 20px;
+    background-color: #00a00061;
+    color: #109400;
+}
